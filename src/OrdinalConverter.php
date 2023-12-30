@@ -23,10 +23,6 @@ class OrdinalConverter
             $locale = $this->locale;
         }
 
-        if (empty($locale)) {
-            $locale = 'en_US';
-        }
-
         $classname = self::loadLocale($locale, '_toWords');
 
         $obj = new $classname;
