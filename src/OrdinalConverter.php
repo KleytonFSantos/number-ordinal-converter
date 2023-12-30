@@ -17,7 +17,7 @@ class OrdinalConverter
     /**
      * @throws OrdinalTextException
      */
-    function toWords(int $num, string $locale = 'pt-BR', array $options = array()): string
+    function toWords(int $num, string $locale = '', array $options = array()): string
     {
         if (empty($locale) && isset($this)) {
             $locale = $this->locale;

@@ -13,7 +13,7 @@ class OrdinalTest extends TestCase {
     {
         $ordinalTest = new OrdinalConverter();
 
-        $this->assertEquals('CENTÉSIMA PRIMEIRA', $ordinalTest->toWords(101));
+        $this->assertEquals('DÉCIMA SEGUNDA', $ordinalTest->toWords(12));
     }
 
     /**
@@ -25,6 +25,6 @@ class OrdinalTest extends TestCase {
 
         $this->expectException(OrdinalTextException::class);
 
-        $ordinalTest->toWords(101, 'en-US');
+        $ordinalTest->toWords(11, 'en-US');
     }
 }

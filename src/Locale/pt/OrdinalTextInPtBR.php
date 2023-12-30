@@ -27,38 +27,18 @@ class OrdinalTextInPtBR extends OrdinalConverter
     public string $lang_native = 'Português Brasileiro';
 
     /**
-     * The word for the minus sign
-     * @var string
-     * @access private
-     */
-    private string $_minus = 'negativo';
-
-    /**
      * The word separator for numerals
      * @var string
      * @access private
      */
     private string $_sep = ' ';
 
-    private array $_contractions = [
-        '',
-        'DÉCIMA PRIMEIRA',
-        'DÉCIMA SEGUNDA',
-        'DÉCIMA TERCEIRA',
-        'DÉCIMA QUARTA',
-        'DÉCIMA QUINTA',
-        'DÉCIMA SEXTA',
-        'DÉCIMA SÉTIMA',
-        'DÉCIMA OITAVA',
-        'DÉCIMA NONA'
-    ];
-
     private array $_words = [
         // Os ordinais para os dígitos
         ['', 'PRIMEIRA', 'SEGUNDA', 'TERCEIRA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÉTIMA', 'OITAVA', 'NONA'],
 
         // Os ordinais para os múltiplos de 10
-        ['', 'DÉCIMA', 'VIGÉSIMA', 'TRIGÉSIMA', 'QUADragésima', 'QUINQUAGÉSIMA', 'SEXAGÉSIMA', 'SEPTUAGÉSIMA', 'OCTOGÉSIMA', 'NONAGÉSIMA'],
+        ['', 'DÉCIMA', 'VIGÉSIMA', 'TRIGÉSIMA', 'QUADRAGÉSIMA', 'QUINQUAGÉSIMA', 'SEXAGÉSIMA', 'SEPTUAGÉSIMA', 'OCTOGÉSIMA', 'NONAGÉSIMA'],
 
         // Os ordinais para as centenas
         ['', 'CENTÉSIMA', 'DUCENTÉSIMA', 'TRECENTÉSIMA', 'QUADRIGENTÉSIMA', 'QUINGENTÉSIMA', 'SEISCENTÉSIMA', 'SEPTINGENTÉSIMA', 'OCTINGENTÉSIMA', 'NONINGENTÉSIMA'],
@@ -89,16 +69,9 @@ class OrdinalTextInPtBR extends OrdinalConverter
     /**
      * @throws OrdinalTextException
      */
-    function _toWords(int $num): string
+    public function _toWords(int $num): string
     {
-        $neg   = 0;
         $ret   = [];
-
-        if ($num < 0) {
-            $ret[] = $this->_minus;
-            $num   = -$num;
-            $neg   = 1;
-        }
 
         $num = number_format($num, 0, '.', '.');
 
@@ -117,15 +90,10 @@ class OrdinalTextInPtBR extends OrdinalConverter
                 continue;
             }
 
-
             $ret[] = $this->_exponent[$index];
 
             $word = array_filter($this->_parseChunk($chunk));
             $ret[] = implode($this->_sep, $word);
-        }
-
-        if ((count($ret) > 2 + $neg) && $this->_mustSeparate($chunks)) {
-            $ret[1 + $neg] = trim($this->_sep . $ret[1 + $neg]);
         }
 
         $ret = array_reverse(array_filter($ret));
@@ -133,36 +101,18 @@ class OrdinalTextInPtBR extends OrdinalConverter
         return implode(' ', $ret);
     }
 
-    function _parseChunk(string $chunk): array
+    private function _parseChunk(string $chunk): array
     {
+        $result = [];
 
         if (!$chunk) {
             return [];
         }
 
-        if (($chunk < 20) && ($chunk > 10)) {
-            return array($this->_contractions[$chunk % 10]);
-        }
-
         $i    = strlen($chunk)-1;
         $n    = (int)$chunk[0];
-        $word = $this->_words[$i][$n];
+        $result[] = $this->_words[$i][$n];
 
-        return array_merge(array($word), $this->_parseChunk(substr($chunk, 1)));
-    }
-
-    function _mustSeparate(array $chunks): bool
-    {
-        $chunk = null;
-
-        reset($chunks);
-        do {
-            list(,$chunk) = each($chunks);
-        } while ($chunk === '000');
-
-        if (($chunk < 100) || !($chunk % 100)) {
-            return true;
-        }
-        return false;
+        return array_merge($result, $this->_parseChunk(substr($chunk, 1)));
     }
 }
