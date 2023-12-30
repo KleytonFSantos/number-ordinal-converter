@@ -37,7 +37,7 @@ class OrdinalConverter
     /**
      * @throws OrdinalTextException
      */
-    public static function loadLocale(string $locale, string $requiredMethod): string
+    private static function loadLocale(string $locale, string $requiredMethod): string
     {
         $classname = 'OrdinalTextConverter\Locale\\'
             . substr($locale, 0, 2)
