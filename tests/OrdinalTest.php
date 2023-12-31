@@ -27,4 +27,11 @@ class OrdinalTest extends TestCase {
 
         $ordinalTest->toWords(11, 'en-US');
     }
+
+    public function test_will_return_ordinal_number_from_int(): void
+    {
+        $ordinalTest = new OrdinalConverter();
+
+        $this->assertEquals('11º', $ordinalTest->toOrdinalNumbers(11, 'pt-BR'));
+    }
 }

@@ -66,4 +66,10 @@ class OrdinalConverter
 
         return $classname;
     }
+
+    public function toOrdinalNumbers(int $number, string $locale = ''): string
+    {
+        $numberFormatter = new \NumberFormatter($locale,\NumberFormatter::ORDINAL);
+        return $numberFormatter->format($number);
+    }
 }
