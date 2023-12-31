@@ -8,12 +8,6 @@ use OrdinalTextConverter\OrdinalTextException;
 class OrdinalTextInPtBR extends OrdinalConverter
 {
 
-    public string $locale = 'pt_BR';
-
-    public string $lang = 'Brazilian Portuguese';
-
-    public string $lang_native = 'Português Brasileiro';
-
     private string $_sep = ' ';
 
     private array $_words = [
@@ -56,7 +50,7 @@ class OrdinalTextInPtBR extends OrdinalConverter
         $num = number_format($num, 0, '.', '.');
 
         if ($num == 0) {
-            return 'zero';
+            return new OrdinalTextException('There is no ordinal word to 0');
         }
 
         $chunks = array_reverse(explode(".", $num));
