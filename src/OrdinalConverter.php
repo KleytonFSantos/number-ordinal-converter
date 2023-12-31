@@ -4,7 +4,7 @@ namespace OrdinalTextConverter;
 /**
  * @Ordinal
  */
-class OrdinalConverter
+class OrdinalConverter implements OrdinalConverterInterface
 {
     /**
      * Default Locale name
@@ -17,7 +17,7 @@ class OrdinalConverter
     /**
      * @throws OrdinalTextException
      */
-    function toWords(int $num, string $locale = '', array $options = array()): string
+    public function toWords(int $num, string $locale = '', array $options = []): string
     {
         if (empty($locale) && isset($this)) {
             $locale = $this->locale;
@@ -65,5 +65,11 @@ class OrdinalConverter
         }
 
         return $classname;
+    }
+
+    public function toOrdinalNumbers(int $number, string $locale = ''): string
+    {
+        $numberFormatter = new \NumberFormatter($locale,\NumberFormatter::ORDINAL);
+        return $numberFormatter->format($number);
     }
 }

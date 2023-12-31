@@ -8,39 +8,13 @@ use OrdinalTextConverter\OrdinalTextException;
 class OrdinalTextInPtBR extends OrdinalConverter
 {
 
-    /**
-     * Locale name
-     * @var string
-     */
-    public string $locale = 'pt_BR';
-
-    /**
-     * Language name in English
-     * @var string
-     */
-    public string $lang = 'Brazilian Portuguese';
-
-    /**
-     * Native language name
-     * @var string
-     */
-    public string $lang_native = 'Português Brasileiro';
-
-    /**
-     * The word separator for numerals
-     * @var string
-     * @access private
-     */
     private string $_sep = ' ';
 
     private array $_words = [
-        // Os ordinais para os dígitos
         ['', 'PRIMEIRA', 'SEGUNDA', 'TERCEIRA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÉTIMA', 'OITAVA', 'NONA'],
 
-        // Os ordinais para os múltiplos de 10
         ['', 'DÉCIMA', 'VIGÉSIMA', 'TRIGÉSIMA', 'QUADRAGÉSIMA', 'QUINQUAGÉSIMA', 'SEXAGÉSIMA', 'SEPTUAGÉSIMA', 'OCTOGÉSIMA', 'NONAGÉSIMA'],
 
-        // Os ordinais para as centenas
         ['', 'CENTÉSIMA', 'DUCENTÉSIMA', 'TRECENTÉSIMA', 'QUADRIGENTÉSIMA', 'QUINGENTÉSIMA', 'SEISCENTÉSIMA', 'SEPTINGENTÉSIMA', 'OCTINGENTÉSIMA', 'NONINGENTÉSIMA'],
     ];
 
@@ -76,7 +50,7 @@ class OrdinalTextInPtBR extends OrdinalConverter
         $num = number_format($num, 0, '.', '.');
 
         if ($num == 0) {
-            return 'zero';
+            return new OrdinalTextException('There is no ordinal word to 0');
         }
 
         $chunks = array_reverse(explode(".", $num));
